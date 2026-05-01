@@ -183,12 +183,41 @@ class Our_Purpose_Widget extends Widget_Base {
 
         $this->add_group_control( Group_Control_Typography::get_type(), [
             'name'     => 'purpose_title_typo',
+            'label'    => esc_html__( 'Title Typography', 'vesara-silks-widgets' ),
             'selector' => '{{WRAPPER}} .vsw-section-title',
         ] );
 
         $this->add_group_control( Group_Control_Typography::get_type(), [
             'name'     => 'purpose_body_typo',
+            'label'    => esc_html__( 'Intro Text Typography', 'vesara-silks-widgets' ),
             'selector' => '{{WRAPPER}} .vsw-section-body',
+        ] );
+
+        // ── BULLET POINT STYLE ───────────────────────────────────────────────
+        $this->add_control( 'purpose_bullet_heading', [
+            'label'     => esc_html__( 'Bullet Points', 'vesara-silks-widgets' ),
+            'type'      => Controls_Manager::HEADING,
+            'separator' => 'before',
+        ] );
+
+        $this->add_control( 'purpose_bullet_color', [
+            'label'     => esc_html__( 'Bullet Text Color', 'vesara-silks-widgets' ),
+            'type'      => Controls_Manager::COLOR,
+            'default'   => '#3a2210',
+            'selectors' => [ '{{WRAPPER}} .vsw-bullet' => 'color: {{VALUE}};' ],
+        ] );
+
+        $this->add_control( 'purpose_bullet_dot_color', [
+            'label'     => esc_html__( 'Bullet Dot Color', 'vesara-silks-widgets' ),
+            'type'      => Controls_Manager::COLOR,
+            'default'   => '#c9a96e',
+            'selectors' => [ '{{WRAPPER}} .vsw-bullet::before' => 'background: {{VALUE}};' ],
+        ] );
+
+        $this->add_group_control( Group_Control_Typography::get_type(), [
+            'name'     => 'purpose_bullet_typo',
+            'label'    => esc_html__( 'Bullet Text Typography', 'vesara-silks-widgets' ),
+            'selector' => '{{WRAPPER}} .vsw-bullet',
         ] );
 
         $this->end_controls_section();
