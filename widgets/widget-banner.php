@@ -41,9 +41,10 @@ class Banner_Widget extends Widget_Base {
         ] );
 
         $repeater->add_control( 'slide_overlay_color', [
-            'label'   => esc_html__( 'Overlay Color', 'vesara-silks-widgets' ),
-            'type'    => Controls_Manager::COLOR,
-            'default' => 'rgba(15,8,3,0.45)',
+            'label'       => esc_html__( 'Overlay Color', 'vesara-silks-widgets' ),
+            'type'        => Controls_Manager::COLOR,
+            'default'     => 'transparent',
+            'description' => esc_html__( 'Leave transparent for no overlay. Use rgba() to add a dark/light tint over the image.', 'vesara-silks-widgets' ),
         ] );
 
         $repeater->add_control( 'slide_content_align', [
@@ -100,8 +101,8 @@ class Banner_Widget extends Widget_Base {
                     'slide_eyebrow'     => 'New Collection',
                     'slide_subtitle'    => "Celebrating tradition. Supporting craftsmanship.\nSharing silk with purpose.",
                     'slide_button_text' => 'SHOP COLLECTION',
-                    'slide_bg_color'    => '#1a1210',
-                    'slide_overlay_color' => 'rgba(15,8,3,0.45)',
+                    'slide_bg_color'      => '#1a1210',
+                    'slide_overlay_color' => 'transparent',
                     'slide_content_align' => 'center',
                 ],
                 [
@@ -109,8 +110,8 @@ class Banner_Widget extends Widget_Base {
                     'slide_eyebrow'     => 'Exclusive Weaves',
                     'slide_subtitle'    => "Premium silk sarees, directly from the artisan.\nTimeless designs for the modern woman.",
                     'slide_button_text' => 'EXPLORE NOW',
-                    'slide_bg_color'    => '#1a100a',
-                    'slide_overlay_color' => 'rgba(15,8,3,0.5)',
+                    'slide_bg_color'      => '#1a100a',
+                    'slide_overlay_color' => 'transparent',
                     'slide_content_align' => 'center',
                 ],
             ],
@@ -514,7 +515,7 @@ class Banner_Widget extends Widget_Base {
             <?php foreach ( $slides as $index => $slide ) :
                 $active      = $index === 0 ? ' vsw-slide-active' : '';
                 $bg_color    = ! empty( $slide['slide_bg_color'] ) ? $slide['slide_bg_color'] : '#1a1210';
-                $overlay     = ! empty( $slide['slide_overlay_color'] ) ? $slide['slide_overlay_color'] : 'rgba(15,8,3,0.45)';
+                $overlay     = ! empty( $slide['slide_overlay_color'] ) ? $slide['slide_overlay_color'] : 'transparent';
                 $align       = ! empty( $slide['slide_content_align'] ) ? $slide['slide_content_align'] : 'center';
                 $img_url     = '';
                 if ( ! empty( $slide['slide_image'] ) && is_array( $slide['slide_image'] ) ) {
@@ -598,7 +599,7 @@ class Banner_Widget extends Widget_Base {
             <# if ( slides && slides.length ) { _.each( slides, function( slide, index ) {
                 var active   = index === 0 ? ' vsw-slide-active' : '';
                 var bgColor  = slide.slide_bg_color || '#1a1210';
-                var overlay  = slide.slide_overlay_color || 'rgba(15,8,3,0.45)';
+                var overlay  = slide.slide_overlay_color || 'transparent';
                 var align    = slide.slide_content_align || 'center';
                 var imgUrl   = slide.slide_image && slide.slide_image.url ? slide.slide_image.url : '';
                 var bgStyle  = 'background-color:' + bgColor + ';' + ( imgUrl ? 'background-image:url(' + imgUrl + ');' : '' );
