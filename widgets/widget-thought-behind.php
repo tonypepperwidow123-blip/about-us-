@@ -150,6 +150,27 @@ class Thought_Behind_Widget extends Widget_Base {
             ],
         ] );
 
+        $this->add_control( 'show_thought_line', [
+            'label'        => esc_html__( 'Show Divider Line', 'vesara-silks-widgets' ),
+            'type'         => Controls_Manager::SWITCHER,
+            'label_on'     => esc_html__( 'Show', 'vesara-silks-widgets' ),
+            'label_off'    => esc_html__( 'Hide', 'vesara-silks-widgets' ),
+            'return_value' => 'yes',
+            'default'      => 'yes',
+        ] );
+
+        $this->add_responsive_control( 'thought_line_margin', [
+            'label'      => esc_html__( 'Divider Line Margin', 'vesara-silks-widgets' ),
+            'type'       => Controls_Manager::DIMENSIONS,
+            'size_units' => [ 'px', '%', 'em' ],
+            'selectors'  => [
+                '{{WRAPPER}} .vsw-title-rule' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+            ],
+            'condition'  => [
+                'show_thought_line' => 'yes',
+            ],
+        ] );
+
         $this->add_control( 'thought_text_color', [
             'label'     => esc_html__( 'Text Color', 'vesara-silks-widgets' ),
             'type'      => Controls_Manager::COLOR,
@@ -265,7 +286,9 @@ class Thought_Behind_Widget extends Widget_Base {
                             <?php echo esc_html( $settings['thought_title_line2'] ); ?>
                         </h2>
                     </div>
+                    <?php if ( 'yes' === $settings['show_thought_line'] ) : ?>
                     <span class="vsw-title-rule" aria-hidden="true"></span>
+                    <?php endif; ?>
                     <div class="vsw-section-body">
                         <?php echo wp_kses_post( $settings['thought_content'] ); ?>
                     </div>
@@ -303,7 +326,9 @@ class Thought_Behind_Widget extends Widget_Base {
                             {{ settings.thought_title_line2 }}
                         </h2>
                     </div>
+                    <# if ( 'yes' === settings.show_thought_line ) { #>
                     <span class="vsw-title-rule" aria-hidden="true"></span>
+                    <# } #>
                     <div class="vsw-section-body">
                         {{{ settings.thought_content }}}
                     </div>
