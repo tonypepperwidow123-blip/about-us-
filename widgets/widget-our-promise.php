@@ -44,14 +44,21 @@ class Our_Promise_Widget extends Widget_Base {
         ] );
 
         $this->add_control( 'promise_icon', [
-            'label'   => esc_html__( 'Icon', 'vesara-silks-widgets' ),
-            'type'    => Controls_Manager::ICONS,
-            'default' => [
+            'label'       => esc_html__( 'Icon', 'vesara-silks-widgets' ),
+            'type'        => Controls_Manager::ICONS,
+            'default'     => [
                 'value'   => 'fas fa-shield-alt',
                 'library' => 'fa-solid',
             ],
-            'skin'        => 'inline',
-            'label_block' => false,
+            'label_block' => true,
+        ] );
+
+        $this->add_control( 'promise_svg_override', [
+            'label'       => esc_html__( 'Or Upload Custom SVG Icon', 'vesara-silks-widgets' ),
+            'type'        => Controls_Manager::MEDIA,
+            'media_types' => [ 'svg' ],
+            'default'     => [ 'url' => '' ],
+            'description' => esc_html__( 'Upload an SVG file. If set, this will replace the icon above.', 'vesara-silks-widgets' ),
         ] );
 
         $this->add_control( 'promise_title', [
@@ -201,9 +208,10 @@ class Our_Promise_Widget extends Widget_Base {
     }
 
     protected function render(): void {
-        $settings  = $this->get_settings_for_display();
-        $img_pos   = $settings['promise_image_position'] === 'left' ? 'vsw-layout--img-left' : 'vsw-layout--img-right';
-        $has_image = ! empty( $settings['promise_image']['url'] );
+        $settings   = $this->get_settings_for_display();
+        $img_pos    = $settings['promise_image_position'] === 'left' ? 'vsw-layout--img-left' : 'vsw-layout--img-right';
+        $has_image  = ! empty( $settings['promise_image']['url'] );
+        $svg_url    = ! empty( $settings['promise_svg_override']['url'] ) ? $settings['promise_svg_override']['url'] : '';
         ?>
         <div class="vsw-section-outer">
             <div class="vsw-section-wrap <?php echo esc_attr( $img_pos ); ?>">
@@ -211,7 +219,11 @@ class Our_Promise_Widget extends Widget_Base {
                 <div class="vsw-section-text">
                     <div class="vsw-section-header">
                         <span class="vsw-icon-badge" aria-hidden="true">
-                            <?php Icons_Manager::render_icon( $settings['promise_icon'], [ 'aria-hidden' => 'true' ] ); ?>
+                            <?php if ( $svg_url ) : ?>
+                                <img src="<?php echo esc_url( $svg_url ); ?>" alt="" class="vsw-svg-icon" aria-hidden="true">
+                            <?php else : ?>
+                                <?php Icons_Manager::render_icon( $settings['promise_icon'], [ 'aria-hidden' => 'true' ] ); ?>
+                            <?php endif; ?>
                         </span>
                         <h2 class="vsw-section-title"><?php echo esc_html( $settings['promise_title'] ); ?></h2>
                     </div>
@@ -238,7 +250,8 @@ class Our_Promise_Widget extends Widget_Base {
     protected function content_template(): void {
         ?>
         <#
-        var imgPos = settings.promise_image_position === 'left' ? 'vsw-layout--img-left' : 'vsw-layout--img-right';
+        var imgPos   = settings.promise_image_position === 'left' ? 'vsw-layout--img-left' : 'vsw-layout--img-right';
+        var svgUrl   = ( settings.promise_svg_override && settings.promise_svg_override.url ) ? settings.promise_svg_override.url : '';
         var iconHTML = elementor.helpers.renderIcon( view, settings.promise_icon, { 'aria-hidden': 'true' }, 'i', 'object' );
         #>
         <div class="vsw-section-outer">
@@ -247,7 +260,11 @@ class Our_Promise_Widget extends Widget_Base {
                 <div class="vsw-section-text">
                     <div class="vsw-section-header">
                         <span class="vsw-icon-badge" aria-hidden="true">
-                            <# if ( iconHTML && iconHTML.value ) { #>{{{ iconHTML.value }}}<# } #>
+                            <# if ( svgUrl ) { #>
+                                <img src="{{ svgUrl }}" alt="" class="vsw-svg-icon" aria-hidden="true">
+                            <# } else if ( iconHTML && iconHTML.value ) { #>
+                                {{{ iconHTML.value }}}
+                            <# } #>
                         </span>
                         <h2 class="vsw-section-title">{{ settings.promise_title }}</h2>
                     </div>
