@@ -91,6 +91,13 @@ class Banner_Widget extends Widget_Base {
             'show_external' => true,
         ] );
 
+        $repeater->add_control( 'slide_banner_link', [
+            'label'         => esc_html__( 'Banner Image Link', 'vesara-silks-widgets' ),
+            'type'          => Controls_Manager::URL,
+            'default'       => [ 'url' => '' ],
+            'show_external' => true,
+        ] );
+
         $this->add_control( 'vsw_banner_slides', [
             'label'       => esc_html__( 'Slides', 'vesara-silks-widgets' ),
             'type'        => Controls_Manager::REPEATER,
@@ -532,9 +539,21 @@ class Banner_Widget extends Widget_Base {
                 if ( ! empty( $btn_obj['nofollow'] ) ) $rel_parts[] = 'nofollow';
                 $target      = $is_ext ? ' target="_blank"' : '';
                 $rel         = $rel_parts ? ' rel="' . esc_attr( implode( ' ', $rel_parts ) ) . '"' : '';
+
+                $b_link_obj  = isset( $slide['slide_banner_link'] ) ? $slide['slide_banner_link'] : [];
+                $b_link_url  = ! empty( $b_link_obj['url'] ) ? $b_link_obj['url'] : '';
+                $b_is_ext    = ! empty( $b_link_obj['is_external'] );
+                $b_rel_parts = $b_is_ext ? [ 'noopener' ] : [];
+                if ( ! empty( $b_link_obj['nofollow'] ) ) $b_rel_parts[] = 'nofollow';
+                $b_target    = $b_is_ext ? ' target="_blank"' : '';
+                $b_rel       = $b_rel_parts ? ' rel="' . esc_attr( implode( ' ', $b_rel_parts ) ) . '"' : '';
             ?>
             <div class="vsw-banner-slide vsw-align-<?php echo esc_attr( $align ); ?><?php echo esc_attr( $active ); ?>"
                  style="<?php echo $bg_style; ?>">
+
+                <?php if ( $b_link_url ) : ?>
+                <a href="<?php echo esc_url( $b_link_url ); ?>" class="vsw-banner-overall-link"<?php echo $b_target . $b_rel; ?>></a>
+                <?php endif; ?>
 
                 <div class="vsw-banner-overlay" style="background:<?php echo esc_attr( $overlay ); ?>;"></div>
 
@@ -603,8 +622,12 @@ class Banner_Widget extends Widget_Base {
                 var align    = slide.slide_content_align || 'center';
                 var imgUrl   = slide.slide_image && slide.slide_image.url ? slide.slide_image.url : '';
                 var bgStyle  = 'background-color:' + bgColor + ';' + ( imgUrl ? 'background-image:url(' + imgUrl + ');' : '' );
+                var bLink    = slide.slide_banner_link && slide.slide_banner_link.url ? slide.slide_banner_link.url : '';
             #>
             <div class="vsw-banner-slide vsw-align-{{ align }}{{ active }}" style="{{ bgStyle }}">
+                <# if ( bLink ) { #>
+                <a href="{{ bLink }}" class="vsw-banner-overall-link"></a>
+                <# } #>
                 <div class="vsw-banner-overlay" style="background:{{ overlay }};"></div>
                 <div class="vsw-banner-content">
                     <# if ( slide.slide_eyebrow ) { #>

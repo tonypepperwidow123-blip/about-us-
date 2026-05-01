@@ -101,14 +101,22 @@
     pointer-events: none;
 }
 
+/* Overall Slide Link */
+.vsw-banner-overall-link {
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+}
+
 /* Content */
 .vsw-banner-content {
     position: relative;
-    z-index: 2;
+    z-index: 4;
     width: 100%;
     padding: 0 80px;
     max-width: 1400px;
     margin: 0 auto;
+    pointer-events: none;
 }
 
 /* Alignment */
@@ -179,6 +187,7 @@
     text-decoration: none;
     padding: 16px 52px;
     transition: background 0.3s ease, color 0.3s ease, transform 0.25s ease;
+    pointer-events: auto;
 }
 .vsw-banner-btn:hover {
     background: #c9a96e;
