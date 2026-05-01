@@ -216,10 +216,9 @@ class Our_Purpose_Widget extends Widget_Base {
             'type'       => Controls_Manager::SLIDER,
             'size_units' => [ 'px', 'vh' ],
             'range'      => [
-                'px' => [ 'min' => 100, 'max' => 900 ],
-                'vh' => [ 'min' => 10,  'max' => 100 ],
+                'px' => [ 'min' => 0, 'max' => 900 ],
+                'vh' => [ 'min' => 0, 'max' => 100 ],
             ],
-            'default'    => [ 'size' => 0, 'unit' => 'px' ],
             'selectors'  => [ '{{WRAPPER}} .vsw-section-img' => 'height: {{SIZE}}{{UNIT}};' ],
             'description' => esc_html__( 'Set to 0 for auto height.', 'vesara-silks-widgets' ),
         ] );
