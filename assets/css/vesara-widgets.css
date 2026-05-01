@@ -1,0 +1,408 @@
+/* Google Fonts are loaded via wp_enqueue_style in PHP — do NOT @import here */
+/* (Some hosts block @import from external sources via CSP or firewall rules)  */
+
+/* ── Box-sizing reset for all plugin elements ── */
+.vsw-banner-wrapper *,
+.vsw-about-hero *,
+.vsw-section-outer *,
+.vsw-section-wrap * {
+    box-sizing: border-box;
+}
+
+/* ═══════════════════════════════════════════════════════
+   WIDGET 1 — HERO BANNER SLIDER (Full-bleed professional)
+═══════════════════════════════════════════════════════ */
+
+.vsw-banner-wrapper {
+    position: relative;
+    width: 100%;
+    min-height: 680px;
+    overflow: hidden;
+    user-select: none;
+    background: #1a1210;
+    /* Break out of Elementor boxed containers */
+    display: block;
+}
+
+/* All slides stacked — pure opacity crossfade */
+.vsw-banner-slide {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.9s ease, transform 0.9s cubic-bezier(0.25, 0.8, 0.25, 1);
+    z-index: 1;
+}
+
+.vsw-banner-slide.vsw-slide-active {
+    opacity: 1;
+    pointer-events: auto;
+    z-index: 2;
+}
+
+/* ── ANIMATION PRESETS ── */
+/* Fade (Default) */
+.vsw-banner-wrapper[data-animation="fade"] .vsw-banner-slide {
+    transform: scale(1);
+}
+
+/* Ken Burns */
+.vsw-banner-wrapper[data-animation="ken-burns"] .vsw-banner-slide {
+    transform: scale(1.08);
+}
+@keyframes vsw-ken-burns {
+    from { transform: scale(1.0); }
+    to   { transform: scale(1.08); }
+}
+.vsw-banner-wrapper[data-animation="ken-burns"] .vsw-banner-slide.vsw-slide-active {
+    animation: vsw-ken-burns var(--vsw-anim-dur, 12s) linear forwards;
+}
+
+/* Zoom Out */
+.vsw-banner-wrapper[data-animation="zoom-out"] .vsw-banner-slide {
+    transform: scale(1.1);
+}
+.vsw-banner-wrapper[data-animation="zoom-out"] .vsw-banner-slide.vsw-slide-active {
+    transform: scale(1);
+}
+
+/* Slide Up */
+.vsw-banner-wrapper[data-animation="slide-up"] .vsw-banner-slide {
+    transform: translateY(30px);
+}
+.vsw-banner-wrapper[data-animation="slide-up"] .vsw-banner-slide.vsw-slide-active {
+    transform: translateY(0);
+}
+
+/* Slide Left */
+.vsw-banner-wrapper[data-animation="slide-left"] .vsw-banner-slide {
+    transform: translateX(40px);
+}
+.vsw-banner-wrapper[data-animation="slide-left"] .vsw-banner-slide.vsw-slide-active {
+    transform: translateX(0);
+}
+
+/* Overlay */
+.vsw-banner-overlay {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 1;
+    pointer-events: none;
+}
+
+/* Content */
+.vsw-banner-content {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    padding: 0 80px;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+/* Alignment */
+.vsw-align-center .vsw-banner-content { text-align: center; }
+.vsw-align-left   .vsw-banner-content { text-align: left;   }
+.vsw-align-right  .vsw-banner-content { text-align: right;  }
+
+/* Eyebrow */
+.vsw-banner-eyebrow {
+    display: inline-block;
+    font-family: 'EB Garamond', Georgia, serif;
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.36em;
+    text-transform: uppercase;
+    color: #c9a96e;
+    margin-bottom: 22px;
+}
+.vsw-align-center .vsw-banner-eyebrow::before,
+.vsw-align-center .vsw-banner-eyebrow::after {
+    content: '';
+    display: inline-block;
+    width: 36px;
+    height: 1px;
+    background: #c9a96e;
+    vertical-align: middle;
+    opacity: 0.65;
+}
+.vsw-align-center .vsw-banner-eyebrow::before { margin-right: 16px; }
+.vsw-align-center .vsw-banner-eyebrow::after  { margin-left:  16px; }
+
+/* Heading */
+.vsw-banner-heading {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: clamp(3rem, 8.5vw, 7.5rem);
+    font-weight: 600;
+    font-style: italic;
+    color: #ffffff;
+    line-height: 1.0;
+    margin: 0 0 28px;
+    letter-spacing: -0.01em;
+}
+
+/* Subtitle */
+.vsw-banner-subtitle {
+    font-family: 'EB Garamond', Georgia, serif;
+    font-size: clamp(0.9rem, 1.4vw, 1.1rem);
+    color: rgba(255,255,255,0.78);
+    line-height: 1.85;
+    margin: 0 auto 40px;
+    max-width: 460px;
+    font-style: italic;
+}
+.vsw-align-left  .vsw-banner-subtitle,
+.vsw-align-right .vsw-banner-subtitle { margin-left: 0; margin-right: 0; }
+
+/* CTA — gold border button */
+.vsw-banner-btn {
+    display: inline-block;
+    background: transparent;
+    color: #c9a96e;
+    border: 1px solid #c9a96e;
+    font-family: 'EB Garamond', Georgia, serif;
+    font-size: 0.8rem;
+    font-weight: 500;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    text-decoration: none;
+    padding: 16px 52px;
+    transition: background 0.3s ease, color 0.3s ease, transform 0.25s ease;
+}
+.vsw-banner-btn:hover {
+    background: #c9a96e;
+    color: #1a1210;
+    transform: translateY(-2px);
+}
+
+/* Dots */
+.vsw-banner-dots {
+    position: absolute;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 12px;
+    z-index: 10;
+}
+.vsw-banner-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    border: 1px solid rgba(201,169,110,0.55);
+    background: transparent;
+    cursor: pointer;
+    padding: 0;
+    transition: background 0.3s ease, border-color 0.3s ease, transform 0.2s ease;
+}
+.vsw-banner-dot:hover  { transform: scale(1.35); border-color: #c9a96e; }
+.vsw-banner-dot.active { background: #c9a96e; border-color: #c9a96e; }
+
+/* Responsive */
+@media (max-width: 1024px) {
+    .vsw-banner-content { padding: 0 48px; }
+}
+@media (max-width: 768px) {
+    .vsw-banner-wrapper { min-height: 480px; }
+    .vsw-banner-content { padding: 0 28px; }
+    .vsw-banner-heading { font-size: clamp(2.2rem, 11vw, 3.5rem); }
+    .vsw-align-center .vsw-banner-eyebrow::before,
+    .vsw-align-center .vsw-banner-eyebrow::after { width: 20px; }
+}
+@media (max-width: 480px) {
+    .vsw-banner-content { padding: 0 20px; }
+    .vsw-banner-btn { padding: 14px 32px; }
+}
+
+/* ═══════════════════════════════════════════════════════
+   WIDGET 2 — ABOUT HERO (Brand Identity Strip)
+═══════════════════════════════════════════════════════ */
+
+.vsw-about-hero {
+    position: relative;
+    background-color: #f5ede0;
+    text-align: center;
+    padding: 64px 40px 56px;
+    overflow: hidden;
+}
+.vsw-hero-ornament {
+    position: absolute;
+    top: -24px;
+    left: -24px;
+    width: 140px;
+    height: 140px;
+    opacity: 0.45;
+    pointer-events: none;
+}
+.vsw-hero-dots {
+    position: absolute;
+    top: 0; right: 0;
+    width: 220px; height: 100%;
+    background-image: radial-gradient(circle, #c9a96e 1px, transparent 1px);
+    background-size: 14px 14px;
+    opacity: 0.18;
+    pointer-events: none;
+}
+.vsw-hero-inner { position: relative; z-index: 2; }
+.vsw-hero-brand {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: clamp(1.3rem, 2.5vw, 2rem);
+    font-weight: 500;
+    letter-spacing: 0.38em;
+    color: #c9a96e;
+    margin: 0 0 18px;
+    text-transform: uppercase;
+}
+.vsw-hero-divider {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 0 20px;
+}
+.vsw-hero-tagline {
+    font-family: 'EB Garamond', Georgia, serif;
+    font-style: italic;
+    font-size: clamp(0.9rem, 1.5vw, 1.1rem);
+    color: #c9a96e;
+    line-height: 1.85;
+    margin: 0;
+}
+@media (max-width: 768px) {
+    .vsw-hero-ornament { width: 90px; height: 90px; }
+    .vsw-hero-dots { width: 100px; }
+    .vsw-about-hero { padding: 48px 24px 40px; }
+}
+
+/* ═══════════════════════════════════════════════════════
+   WIDGETS 3–7 — SHARED SECTION LAYOUT
+═══════════════════════════════════════════════════════ */
+
+.vsw-section-outer {
+    border-top: 1px solid rgba(201,169,110,0.35);
+    background-color: #f5ede0;
+}
+.vsw-section-outer:last-child,
+.vsw-section-outer:only-child {
+    border-bottom: 1px solid rgba(201,169,110,0.35);
+}
+.vsw-section-wrap {
+    display: flex;
+    align-items: center;
+    gap: 60px;
+    padding: 80px 80px;
+    background-color: #f5ede0;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+.vsw-layout--img-right { flex-direction: row; }
+.vsw-layout--img-left  { flex-direction: row-reverse; }
+.vsw-section-text  { flex: 0 0 420px; max-width: 520px; }
+.vsw-section-media { flex: 1; display: flex; align-items: center; justify-content: center; }
+.vsw-section-header {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    margin-bottom: 14px;
+}
+.vsw-icon-badge {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px; height: 48px;
+    border-radius: 50%;
+    background-color: #4a1e0e;
+    flex-shrink: 0;
+    transition: transform 0.25s ease;
+}
+.vsw-icon-badge:hover { transform: scale(1.08); }
+.vsw-icon-badge i { color: #c9a96e; font-size: 18px; }
+.vsw-section-title {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: clamp(1rem, 1.8vw, 1.3rem);
+    font-weight: 500;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: #c9a96e;
+    margin: 0;
+    line-height: 1.35;
+}
+.vsw-title-rule {
+    display: block;
+    width: 36px; height: 2px;
+    background: #c9a96e;
+    margin: 10px 0 22px;
+}
+.vsw-section-body {
+    font-family: 'EB Garamond', Georgia, serif;
+    font-size: clamp(0.9rem, 1.3vw, 1rem);
+    line-height: 1.85;
+    color: #3a2210;
+}
+.vsw-section-body p { margin: 0 0 16px; }
+.vsw-section-body p:last-child { margin-bottom: 0; }
+.vsw-bullets { list-style: none; padding: 0; margin: 12px 0 0; }
+.vsw-bullet {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 6px 0;
+    font-family: 'EB Garamond', Georgia, serif;
+    font-size: clamp(0.88rem, 1.2vw, 0.98rem);
+    color: #3a2210;
+    line-height: 1.65;
+}
+.vsw-bullet::before {
+    content: '';
+    display: inline-block;
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: #c9a96e;
+    flex-shrink: 0;
+    margin-top: 7px;
+}
+.vsw-section-img {
+    width: 100%;
+    max-width: 540px;
+    height: auto;
+    border-radius: 4px;
+    display: block;
+    transition: transform 0.4s ease;
+}
+.vsw-section-img:hover { transform: scale(1.015); }
+
+/* Responsive – sections */
+@media (max-width: 1200px) {
+    .vsw-section-wrap { padding: 72px 60px; gap: 48px; }
+    .vsw-section-text { flex: 0 0 380px; }
+}
+@media (max-width: 1024px) {
+    .vsw-section-wrap { padding: 60px 40px; gap: 40px; }
+    .vsw-section-text { flex: 0 0 340px; }
+}
+@media (max-width: 768px) {
+    .vsw-section-wrap,
+    .vsw-layout--img-right,
+    .vsw-layout--img-left {
+        flex-direction: column !important;
+        padding: 48px 24px;
+        gap: 32px;
+    }
+    .vsw-section-text { flex: unset; width: 100%; max-width: 100%; }
+    .vsw-section-media { width: 100%; }
+    .vsw-section-img { max-width: 100%; }
+}
+@media (max-width: 480px) {
+    .vsw-section-wrap { padding: 36px 16px; }
+    .vsw-section-title { letter-spacing: 0.15em; }
+}
