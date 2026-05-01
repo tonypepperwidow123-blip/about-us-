@@ -4,6 +4,7 @@ namespace Vesara_Silks\Widgets;
 use Elementor\Widget_Base;
 use Elementor\Controls_Manager;
 use Elementor\Group_Control_Typography;
+use Elementor\Icons_Manager;
 
 if ( ! defined( 'ABSPATH' ) ) exit;
 
@@ -43,9 +44,14 @@ class Our_Promise_Widget extends Widget_Base {
         ] );
 
         $this->add_control( 'promise_icon', [
-            'label'   => esc_html__( 'Icon Class', 'vesara-silks-widgets' ),
-            'type'    => Controls_Manager::TEXT,
-            'default' => 'eicon-shield',
+            'label'   => esc_html__( 'Icon', 'vesara-silks-widgets' ),
+            'type'    => Controls_Manager::ICONS,
+            'default' => [
+                'value'   => 'fas fa-shield-alt',
+                'library' => 'fa-solid',
+            ],
+            'skin'        => 'inline',
+            'label_block' => false,
         ] );
 
         $this->add_control( 'promise_title', [
@@ -105,12 +111,26 @@ class Our_Promise_Widget extends Widget_Base {
             'separator' => 'before',
         ] );
 
+        $this->add_control( 'promise_icon_color', [
+            'label'     => esc_html__( 'Icon Color', 'vesara-silks-widgets' ),
+            'type'      => Controls_Manager::COLOR,
+            'default'   => '#c9a96e',
+            'selectors' => [
+                '{{WRAPPER}} .vsw-icon-badge i'   => 'color: {{VALUE}};',
+                '{{WRAPPER}} .vsw-icon-badge svg'  => 'fill: {{VALUE}};',
+            ],
+        ] );
+
         $this->add_responsive_control( 'promise_icon_size', [
             'label'      => esc_html__( 'Icon Size', 'vesara-silks-widgets' ),
             'type'       => Controls_Manager::SLIDER,
             'size_units' => [ 'px' ],
             'range'      => [ 'px' => [ 'min' => 10, 'max' => 80 ] ],
-            'selectors'  => [ '{{WRAPPER}} .vsw-icon-badge i' => 'font-size: {{SIZE}}{{UNIT}};' ],
+            'default'    => [ 'size' => 22, 'unit' => 'px' ],
+            'selectors'  => [
+                '{{WRAPPER}} .vsw-icon-badge i'   => 'font-size: {{SIZE}}{{UNIT}};',
+                '{{WRAPPER}} .vsw-icon-badge svg'  => 'width: {{SIZE}}{{UNIT}}; height: {{SIZE}}{{UNIT}};',
+            ],
         ] );
 
         $this->add_responsive_control( 'promise_badge_size', [
@@ -118,6 +138,7 @@ class Our_Promise_Widget extends Widget_Base {
             'type'       => Controls_Manager::SLIDER,
             'size_units' => [ 'px' ],
             'range'      => [ 'px' => [ 'min' => 20, 'max' => 120 ] ],
+            'default'    => [ 'size' => 56, 'unit' => 'px' ],
             'selectors'  => [ '{{WRAPPER}} .vsw-icon-badge' => 'width: {{SIZE}}{{UNIT}}; height: {{SIZE}}{{UNIT}};' ],
         ] );
 
@@ -136,7 +157,6 @@ class Our_Promise_Widget extends Widget_Base {
             'selectors' => [
                 '{{WRAPPER}} .vsw-section-title' => 'color: {{VALUE}};',
                 '{{WRAPPER}} .vsw-title-rule'    => 'background: {{VALUE}};',
-                '{{WRAPPER}} .vsw-icon-badge i'  => 'color: {{VALUE}};',
             ],
         ] );
 
@@ -181,10 +201,9 @@ class Our_Promise_Widget extends Widget_Base {
     }
 
     protected function render(): void {
-        $settings      = $this->get_settings_for_display();
-        $img_pos       = $settings['promise_image_position'] === 'left' ? 'vsw-layout--img-left' : 'vsw-layout--img-right';
-        $icon_class    = esc_attr( $settings['promise_icon'] );
-        $has_image     = ! empty( $settings['promise_image']['url'] );
+        $settings  = $this->get_settings_for_display();
+        $img_pos   = $settings['promise_image_position'] === 'left' ? 'vsw-layout--img-left' : 'vsw-layout--img-right';
+        $has_image = ! empty( $settings['promise_image']['url'] );
         ?>
         <div class="vsw-section-outer">
             <div class="vsw-section-wrap <?php echo esc_attr( $img_pos ); ?>">
@@ -192,7 +211,7 @@ class Our_Promise_Widget extends Widget_Base {
                 <div class="vsw-section-text">
                     <div class="vsw-section-header">
                         <span class="vsw-icon-badge" aria-hidden="true">
-                            <i class="<?php echo $icon_class; ?>"></i>
+                            <?php Icons_Manager::render_icon( $settings['promise_icon'], [ 'aria-hidden' => 'true' ] ); ?>
                         </span>
                         <h2 class="vsw-section-title"><?php echo esc_html( $settings['promise_title'] ); ?></h2>
                     </div>
@@ -219,8 +238,8 @@ class Our_Promise_Widget extends Widget_Base {
     protected function content_template(): void {
         ?>
         <#
-        var imgPos    = settings.promise_image_position === 'left' ? 'vsw-layout--img-left' : 'vsw-layout--img-right';
-        var iconClass = settings.promise_icon;
+        var imgPos = settings.promise_image_position === 'left' ? 'vsw-layout--img-left' : 'vsw-layout--img-right';
+        var iconHTML = elementor.helpers.renderIcon( view, settings.promise_icon, { 'aria-hidden': 'true' }, 'i', 'object' );
         #>
         <div class="vsw-section-outer">
             <div class="vsw-section-wrap {{ imgPos }}">
@@ -228,7 +247,7 @@ class Our_Promise_Widget extends Widget_Base {
                 <div class="vsw-section-text">
                     <div class="vsw-section-header">
                         <span class="vsw-icon-badge" aria-hidden="true">
-                            <i class="{{ iconClass }}"></i>
+                            <# if ( iconHTML && iconHTML.value ) { #>{{{ iconHTML.value }}}<# } #>
                         </span>
                         <h2 class="vsw-section-title">{{ settings.promise_title }}</h2>
                     </div>

@@ -4,38 +4,20 @@ namespace Vesara_Silks\Widgets;
 use Elementor\Widget_Base;
 use Elementor\Controls_Manager;
 use Elementor\Group_Control_Typography;
+use Elementor\Icons_Manager;
 
 if ( ! defined( 'ABSPATH' ) ) exit;
 
 class Thought_Behind_Widget extends Widget_Base {
 
-    public function get_name(): string {
-        return 'vsw_thought_behind';
-    }
-
-    public function get_title(): string {
-        return esc_html__( 'Vesara — The Thought Behind', 'vesara-silks-widgets' );
-    }
-
-    public function get_icon(): string {
-        return 'eicon-bulb';
-    }
-
-    public function get_categories(): array {
-        return [ 'vesara-silks' ];
-    }
-
-    public function get_keywords(): array {
-        return [ 'vesara', 'thought', 'story', 'about', 'silk' ];
-    }
-
-    public function get_style_depends(): array {
-        return [ 'vesara-widgets-style' ];
-    }
+    public function get_name(): string { return 'vsw_thought_behind'; }
+    public function get_title(): string { return esc_html__( 'Vesara — The Thought Behind', 'vesara-silks-widgets' ); }
+    public function get_icon(): string { return 'eicon-bulb'; }
+    public function get_categories(): array { return [ 'vesara-silks' ]; }
+    public function get_keywords(): array { return [ 'vesara', 'thought', 'story', 'about', 'silk' ]; }
+    public function get_style_depends(): array { return [ 'vesara-widgets-style' ]; }
 
     protected function register_controls(): void {
-
-        // ── CONTENT TAB ──────────────────────────────────────────────────────
 
         $this->start_controls_section( 'section_thought_content', [
             'label' => esc_html__( 'Content', 'vesara-silks-widgets' ),
@@ -43,9 +25,11 @@ class Thought_Behind_Widget extends Widget_Base {
         ] );
 
         $this->add_control( 'thought_icon', [
-            'label'   => esc_html__( 'Icon Class', 'vesara-silks-widgets' ),
-            'type'    => Controls_Manager::TEXT,
-            'default' => 'eicon-bulb',
+            'label'       => esc_html__( 'Icon', 'vesara-silks-widgets' ),
+            'type'        => Controls_Manager::ICONS,
+            'default'     => [ 'value' => 'fas fa-lightbulb', 'library' => 'fa-solid' ],
+            'skin'        => 'inline',
+            'label_block' => false,
         ] );
 
         $this->add_control( 'thought_title_line1', [
@@ -84,8 +68,7 @@ class Thought_Behind_Widget extends Widget_Base {
 
         $this->end_controls_section();
 
-        // ── STYLE TAB ─────────────────────────────────────────────────────────
-
+        // STYLE TAB
         $this->start_controls_section( 'thought_style', [
             'label' => esc_html__( 'Style', 'vesara-silks-widgets' ),
             'tab'   => Controls_Manager::TAB_STYLE,
@@ -111,12 +94,26 @@ class Thought_Behind_Widget extends Widget_Base {
             'separator' => 'before',
         ] );
 
+        $this->add_control( 'thought_icon_color', [
+            'label'     => esc_html__( 'Icon Color', 'vesara-silks-widgets' ),
+            'type'      => Controls_Manager::COLOR,
+            'default'   => '#c9a96e',
+            'selectors' => [
+                '{{WRAPPER}} .vsw-icon-badge i'  => 'color: {{VALUE}};',
+                '{{WRAPPER}} .vsw-icon-badge svg' => 'fill: {{VALUE}};',
+            ],
+        ] );
+
         $this->add_responsive_control( 'thought_icon_size', [
             'label'      => esc_html__( 'Icon Size', 'vesara-silks-widgets' ),
             'type'       => Controls_Manager::SLIDER,
             'size_units' => [ 'px' ],
             'range'      => [ 'px' => [ 'min' => 10, 'max' => 80 ] ],
-            'selectors'  => [ '{{WRAPPER}} .vsw-icon-badge i' => 'font-size: {{SIZE}}{{UNIT}};' ],
+            'default'    => [ 'size' => 22, 'unit' => 'px' ],
+            'selectors'  => [
+                '{{WRAPPER}} .vsw-icon-badge i'  => 'font-size: {{SIZE}}{{UNIT}};',
+                '{{WRAPPER}} .vsw-icon-badge svg' => 'width: {{SIZE}}{{UNIT}}; height: {{SIZE}}{{UNIT}};',
+            ],
         ] );
 
         $this->add_responsive_control( 'thought_badge_size', [
@@ -124,15 +121,16 @@ class Thought_Behind_Widget extends Widget_Base {
             'type'       => Controls_Manager::SLIDER,
             'size_units' => [ 'px' ],
             'range'      => [ 'px' => [ 'min' => 20, 'max' => 120 ] ],
+            'default'    => [ 'size' => 56, 'unit' => 'px' ],
             'selectors'  => [ '{{WRAPPER}} .vsw-icon-badge' => 'width: {{SIZE}}{{UNIT}}; height: {{SIZE}}{{UNIT}};' ],
         ] );
 
         $this->add_responsive_control( 'thought_icon_margin', [
-            'label'      => esc_html__( 'Icon Position (Margin)', 'vesara-silks-widgets' ),
-            'type'       => Controls_Manager::DIMENSIONS,
-            'size_units' => [ 'px', '%', 'em' ],
-            'selectors'  => [ '{{WRAPPER}} .vsw-icon-badge' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};' ],
-            'description'=> esc_html__( 'Use margin to manually move the icon up, down, left, or right.', 'vesara-silks-widgets' ),
+            'label'       => esc_html__( 'Icon Position (Margin)', 'vesara-silks-widgets' ),
+            'type'        => Controls_Manager::DIMENSIONS,
+            'size_units'  => [ 'px', '%', 'em' ],
+            'selectors'   => [ '{{WRAPPER}} .vsw-icon-badge' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};' ],
+            'description' => esc_html__( 'Use margin to manually move the icon up, down, left, or right.', 'vesara-silks-widgets' ),
         ] );
 
         $this->add_control( 'thought_gold', [
@@ -142,7 +140,6 @@ class Thought_Behind_Widget extends Widget_Base {
             'selectors' => [
                 '{{WRAPPER}} .vsw-section-title' => 'color: {{VALUE}};',
                 '{{WRAPPER}} .vsw-title-rule'    => 'background: {{VALUE}};',
-                '{{WRAPPER}} .vsw-icon-badge i'  => 'color: {{VALUE}};',
             ],
         ] );
 
@@ -159,9 +156,7 @@ class Thought_Behind_Widget extends Widget_Base {
             'size_units' => [ 'px' ],
             'range'      => [ 'px' => [ 'min' => 20, 'max' => 160 ] ],
             'default'    => [ 'size' => 80, 'unit' => 'px' ],
-            'selectors'  => [
-                '{{WRAPPER}} .vsw-section-wrap' => 'padding-top: {{SIZE}}{{UNIT}}; padding-bottom: {{SIZE}}{{UNIT}};',
-            ],
+            'selectors'  => [ '{{WRAPPER}} .vsw-section-wrap' => 'padding-top: {{SIZE}}{{UNIT}}; padding-bottom: {{SIZE}}{{UNIT}};' ],
         ] );
 
         $this->add_control( 'thought_img_radius', [
@@ -187,18 +182,16 @@ class Thought_Behind_Widget extends Widget_Base {
     }
 
     protected function render(): void {
-        $settings   = $this->get_settings_for_display();
-        $img_pos    = $settings['thought_image_position'] === 'left' ? 'vsw-layout--img-left' : 'vsw-layout--img-right';
-        $icon_class = esc_attr( $settings['thought_icon'] );
-        $has_image  = ! empty( $settings['thought_image']['url'] );
+        $settings  = $this->get_settings_for_display();
+        $img_pos   = $settings['thought_image_position'] === 'left' ? 'vsw-layout--img-left' : 'vsw-layout--img-right';
+        $has_image = ! empty( $settings['thought_image']['url'] );
         ?>
         <div class="vsw-section-outer">
             <div class="vsw-section-wrap <?php echo esc_attr( $img_pos ); ?>">
-
                 <div class="vsw-section-text">
                     <div class="vsw-section-header">
                         <span class="vsw-icon-badge" aria-hidden="true">
-                            <i class="<?php echo $icon_class; ?>"></i>
+                            <?php Icons_Manager::render_icon( $settings['thought_icon'], [ 'aria-hidden' => 'true' ] ); ?>
                         </span>
                         <h2 class="vsw-section-title">
                             <?php echo esc_html( $settings['thought_title_line1'] ); ?><br>
@@ -210,16 +203,11 @@ class Thought_Behind_Widget extends Widget_Base {
                         <?php echo wp_kses_post( $settings['thought_content'] ); ?>
                     </div>
                 </div>
-
                 <div class="vsw-section-media">
                     <?php if ( $has_image ) : ?>
-                    <img class="vsw-section-img"
-                         src="<?php echo esc_url( $settings['thought_image']['url'] ); ?>"
-                         alt="<?php echo esc_attr( $settings['thought_title_line1'] . ' ' . $settings['thought_title_line2'] ); ?>"
-                         loading="lazy">
+                    <img class="vsw-section-img" src="<?php echo esc_url( $settings['thought_image']['url'] ); ?>" alt="<?php echo esc_attr( $settings['thought_title_line1'] . ' ' . $settings['thought_title_line2'] ); ?>" loading="lazy">
                     <?php endif; ?>
                 </div>
-
             </div>
         </div>
         <?php
@@ -228,16 +216,15 @@ class Thought_Behind_Widget extends Widget_Base {
     protected function content_template(): void {
         ?>
         <#
-        var imgPos    = settings.thought_image_position === 'left' ? 'vsw-layout--img-left' : 'vsw-layout--img-right';
-        var iconClass = settings.thought_icon;
+        var imgPos   = settings.thought_image_position === 'left' ? 'vsw-layout--img-left' : 'vsw-layout--img-right';
+        var iconHTML = elementor.helpers.renderIcon( view, settings.thought_icon, { 'aria-hidden': 'true' }, 'i', 'object' );
         #>
         <div class="vsw-section-outer">
             <div class="vsw-section-wrap {{ imgPos }}">
-
                 <div class="vsw-section-text">
                     <div class="vsw-section-header">
                         <span class="vsw-icon-badge" aria-hidden="true">
-                            <i class="{{ iconClass }}"></i>
+                            <# if ( iconHTML && iconHTML.value ) { #>{{{ iconHTML.value }}}<# } #>
                         </span>
                         <h2 class="vsw-section-title">
                             {{ settings.thought_title_line1 }}<br>
@@ -249,15 +236,11 @@ class Thought_Behind_Widget extends Widget_Base {
                         {{{ settings.thought_content }}}
                     </div>
                 </div>
-
                 <div class="vsw-section-media">
                     <# if ( settings.thought_image && settings.thought_image.url ) { #>
-                    <img class="vsw-section-img"
-                         src="{{ settings.thought_image.url }}"
-                         alt="{{ settings.thought_title_line1 }} {{ settings.thought_title_line2 }}">
+                    <img class="vsw-section-img" src="{{ settings.thought_image.url }}" alt="{{ settings.thought_title_line1 }} {{ settings.thought_title_line2 }}">
                     <# } #>
                 </div>
-
             </div>
         </div>
         <?php

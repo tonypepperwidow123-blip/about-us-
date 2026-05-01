@@ -4,38 +4,20 @@ namespace Vesara_Silks\Widgets;
 use Elementor\Widget_Base;
 use Elementor\Controls_Manager;
 use Elementor\Group_Control_Typography;
+use Elementor\Icons_Manager;
 
 if ( ! defined( 'ABSPATH' ) ) exit;
 
 class Our_Approach_Widget extends Widget_Base {
 
-    public function get_name(): string {
-        return 'vsw_our_approach';
-    }
-
-    public function get_title(): string {
-        return esc_html__( 'Vesara — Our Approach', 'vesara-silks-widgets' );
-    }
-
-    public function get_icon(): string {
-        return 'eicon-heart';
-    }
-
-    public function get_categories(): array {
-        return [ 'vesara-silks' ];
-    }
-
-    public function get_keywords(): array {
-        return [ 'vesara', 'approach', 'about', 'silk', 'brand' ];
-    }
-
-    public function get_style_depends(): array {
-        return [ 'vesara-widgets-style' ];
-    }
+    public function get_name(): string { return 'vsw_our_approach'; }
+    public function get_title(): string { return esc_html__( 'Vesara — Our Approach', 'vesara-silks-widgets' ); }
+    public function get_icon(): string { return 'eicon-heart'; }
+    public function get_categories(): array { return [ 'vesara-silks' ]; }
+    public function get_keywords(): array { return [ 'vesara', 'approach', 'about', 'silk', 'brand' ]; }
+    public function get_style_depends(): array { return [ 'vesara-widgets-style' ]; }
 
     protected function register_controls(): void {
-
-        // ── CONTENT TAB ──────────────────────────────────────────────────────
 
         $this->start_controls_section( 'section_approach_content', [
             'label' => esc_html__( 'Content', 'vesara-silks-widgets' ),
@@ -43,9 +25,11 @@ class Our_Approach_Widget extends Widget_Base {
         ] );
 
         $this->add_control( 'approach_icon', [
-            'label'   => esc_html__( 'Icon Class', 'vesara-silks-widgets' ),
-            'type'    => Controls_Manager::TEXT,
-            'default' => 'eicon-heart',
+            'label'       => esc_html__( 'Icon', 'vesara-silks-widgets' ),
+            'type'        => Controls_Manager::ICONS,
+            'default'     => [ 'value' => 'fas fa-hands-helping', 'library' => 'fa-solid' ],
+            'skin'        => 'inline',
+            'label_block' => false,
         ] );
 
         $this->add_control( 'approach_title', [
@@ -86,8 +70,7 @@ class Our_Approach_Widget extends Widget_Base {
 
         $this->end_controls_section();
 
-        // ── STYLE TAB ─────────────────────────────────────────────────────────
-
+        // STYLE TAB
         $this->start_controls_section( 'approach_style', [
             'label' => esc_html__( 'Style', 'vesara-silks-widgets' ),
             'tab'   => Controls_Manager::TAB_STYLE,
@@ -113,12 +96,26 @@ class Our_Approach_Widget extends Widget_Base {
             'separator' => 'before',
         ] );
 
+        $this->add_control( 'approach_icon_color', [
+            'label'     => esc_html__( 'Icon Color', 'vesara-silks-widgets' ),
+            'type'      => Controls_Manager::COLOR,
+            'default'   => '#c9a96e',
+            'selectors' => [
+                '{{WRAPPER}} .vsw-icon-badge i'  => 'color: {{VALUE}};',
+                '{{WRAPPER}} .vsw-icon-badge svg' => 'fill: {{VALUE}};',
+            ],
+        ] );
+
         $this->add_responsive_control( 'approach_icon_size', [
             'label'      => esc_html__( 'Icon Size', 'vesara-silks-widgets' ),
             'type'       => Controls_Manager::SLIDER,
             'size_units' => [ 'px' ],
             'range'      => [ 'px' => [ 'min' => 10, 'max' => 80 ] ],
-            'selectors'  => [ '{{WRAPPER}} .vsw-icon-badge i' => 'font-size: {{SIZE}}{{UNIT}};' ],
+            'default'    => [ 'size' => 22, 'unit' => 'px' ],
+            'selectors'  => [
+                '{{WRAPPER}} .vsw-icon-badge i'  => 'font-size: {{SIZE}}{{UNIT}};',
+                '{{WRAPPER}} .vsw-icon-badge svg' => 'width: {{SIZE}}{{UNIT}}; height: {{SIZE}}{{UNIT}};',
+            ],
         ] );
 
         $this->add_responsive_control( 'approach_badge_size', [
@@ -126,15 +123,16 @@ class Our_Approach_Widget extends Widget_Base {
             'type'       => Controls_Manager::SLIDER,
             'size_units' => [ 'px' ],
             'range'      => [ 'px' => [ 'min' => 20, 'max' => 120 ] ],
+            'default'    => [ 'size' => 56, 'unit' => 'px' ],
             'selectors'  => [ '{{WRAPPER}} .vsw-icon-badge' => 'width: {{SIZE}}{{UNIT}}; height: {{SIZE}}{{UNIT}};' ],
         ] );
 
         $this->add_responsive_control( 'approach_icon_margin', [
-            'label'      => esc_html__( 'Icon Position (Margin)', 'vesara-silks-widgets' ),
-            'type'       => Controls_Manager::DIMENSIONS,
-            'size_units' => [ 'px', '%', 'em' ],
-            'selectors'  => [ '{{WRAPPER}} .vsw-icon-badge' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};' ],
-            'description'=> esc_html__( 'Use margin to manually move the icon up, down, left, or right.', 'vesara-silks-widgets' ),
+            'label'       => esc_html__( 'Icon Position (Margin)', 'vesara-silks-widgets' ),
+            'type'        => Controls_Manager::DIMENSIONS,
+            'size_units'  => [ 'px', '%', 'em' ],
+            'selectors'   => [ '{{WRAPPER}} .vsw-icon-badge' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};' ],
+            'description' => esc_html__( 'Use margin to manually move the icon up, down, left, or right.', 'vesara-silks-widgets' ),
         ] );
 
         $this->add_control( 'approach_gold', [
@@ -144,7 +142,6 @@ class Our_Approach_Widget extends Widget_Base {
             'selectors' => [
                 '{{WRAPPER}} .vsw-section-title'  => 'color: {{VALUE}};',
                 '{{WRAPPER}} .vsw-title-rule'     => 'background: {{VALUE}};',
-                '{{WRAPPER}} .vsw-icon-badge i'   => 'color: {{VALUE}};',
                 '{{WRAPPER}} .vsw-bullet::before' => 'background: {{VALUE}};',
             ],
         ] );
@@ -165,9 +162,7 @@ class Our_Approach_Widget extends Widget_Base {
             'size_units' => [ 'px' ],
             'range'      => [ 'px' => [ 'min' => 20, 'max' => 160 ] ],
             'default'    => [ 'size' => 80, 'unit' => 'px' ],
-            'selectors'  => [
-                '{{WRAPPER}} .vsw-section-wrap' => 'padding-top: {{SIZE}}{{UNIT}}; padding-bottom: {{SIZE}}{{UNIT}};',
-            ],
+            'selectors'  => [ '{{WRAPPER}} .vsw-section-wrap' => 'padding-top: {{SIZE}}{{UNIT}}; padding-bottom: {{SIZE}}{{UNIT}};' ],
         ] );
 
         $this->add_control( 'approach_img_radius', [
@@ -193,19 +188,17 @@ class Our_Approach_Widget extends Widget_Base {
     }
 
     protected function render(): void {
-        $settings   = $this->get_settings_for_display();
-        $img_pos    = $settings['approach_image_position'] === 'left' ? 'vsw-layout--img-left' : 'vsw-layout--img-right';
-        $icon_class = esc_attr( $settings['approach_icon'] );
-        $has_image  = ! empty( $settings['approach_image']['url'] );
-        $bullets    = array_filter( array_map( 'trim', explode( "\n", $settings['approach_bullets'] ) ) );
+        $settings  = $this->get_settings_for_display();
+        $img_pos   = $settings['approach_image_position'] === 'left' ? 'vsw-layout--img-left' : 'vsw-layout--img-right';
+        $has_image = ! empty( $settings['approach_image']['url'] );
+        $bullets   = array_filter( array_map( 'trim', explode( "\n", $settings['approach_bullets'] ) ) );
         ?>
         <div class="vsw-section-outer">
             <div class="vsw-section-wrap <?php echo esc_attr( $img_pos ); ?>">
-
                 <div class="vsw-section-text">
                     <div class="vsw-section-header">
                         <span class="vsw-icon-badge" aria-hidden="true">
-                            <i class="<?php echo $icon_class; ?>"></i>
+                            <?php Icons_Manager::render_icon( $settings['approach_icon'], [ 'aria-hidden' => 'true' ] ); ?>
                         </span>
                         <h2 class="vsw-section-title"><?php echo esc_html( $settings['approach_title'] ); ?></h2>
                     </div>
@@ -221,16 +214,11 @@ class Our_Approach_Widget extends Widget_Base {
                         <?php endif; ?>
                     </div>
                 </div>
-
                 <div class="vsw-section-media">
                     <?php if ( $has_image ) : ?>
-                    <img class="vsw-section-img"
-                         src="<?php echo esc_url( $settings['approach_image']['url'] ); ?>"
-                         alt="<?php echo esc_attr( $settings['approach_title'] ); ?>"
-                         loading="lazy">
+                    <img class="vsw-section-img" src="<?php echo esc_url( $settings['approach_image']['url'] ); ?>" alt="<?php echo esc_attr( $settings['approach_title'] ); ?>" loading="lazy">
                     <?php endif; ?>
                 </div>
-
             </div>
         </div>
         <?php
@@ -240,17 +228,16 @@ class Our_Approach_Widget extends Widget_Base {
         ?>
         <#
         var imgPos     = settings.approach_image_position === 'left' ? 'vsw-layout--img-left' : 'vsw-layout--img-right';
-        var iconClass  = settings.approach_icon;
+        var iconHTML   = elementor.helpers.renderIcon( view, settings.approach_icon, { 'aria-hidden': 'true' }, 'i', 'object' );
         var bulletsRaw = settings.approach_bullets || '';
         var bullets    = bulletsRaw.split('\n').filter( function(b) { return b.trim() !== ''; } );
         #>
         <div class="vsw-section-outer">
             <div class="vsw-section-wrap {{ imgPos }}">
-
                 <div class="vsw-section-text">
                     <div class="vsw-section-header">
                         <span class="vsw-icon-badge" aria-hidden="true">
-                            <i class="{{ iconClass }}"></i>
+                            <# if ( iconHTML && iconHTML.value ) { #>{{{ iconHTML.value }}}<# } #>
                         </span>
                         <h2 class="vsw-section-title">{{ settings.approach_title }}</h2>
                     </div>
@@ -266,15 +253,11 @@ class Our_Approach_Widget extends Widget_Base {
                         <# } #>
                     </div>
                 </div>
-
                 <div class="vsw-section-media">
                     <# if ( settings.approach_image && settings.approach_image.url ) { #>
-                    <img class="vsw-section-img"
-                         src="{{ settings.approach_image.url }}"
-                         alt="{{ settings.approach_title }}">
+                    <img class="vsw-section-img" src="{{ settings.approach_image.url }}" alt="{{ settings.approach_title }}">
                     <# } #>
                 </div>
-
             </div>
         </div>
         <?php

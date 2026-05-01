@@ -4,38 +4,20 @@ namespace Vesara_Silks\Widgets;
 use Elementor\Widget_Base;
 use Elementor\Controls_Manager;
 use Elementor\Group_Control_Typography;
+use Elementor\Icons_Manager;
 
 if ( ! defined( 'ABSPATH' ) ) exit;
 
 class About_Vesara_Widget extends Widget_Base {
 
-    public function get_name(): string {
-        return 'vsw_about_vesara';
-    }
-
-    public function get_title(): string {
-        return esc_html__( 'Vesara — About Vesara Silks', 'vesara-silks-widgets' );
-    }
-
-    public function get_icon(): string {
-        return 'eicon-person';
-    }
-
-    public function get_categories(): array {
-        return [ 'vesara-silks' ];
-    }
-
-    public function get_keywords(): array {
-        return [ 'vesara', 'about', 'silk', 'brand', 'story' ];
-    }
-
-    public function get_style_depends(): array {
-        return [ 'vesara-widgets-style' ];
-    }
+    public function get_name(): string { return 'vsw_about_vesara'; }
+    public function get_title(): string { return esc_html__( 'Vesara — About Vesara Silks', 'vesara-silks-widgets' ); }
+    public function get_icon(): string { return 'eicon-person'; }
+    public function get_categories(): array { return [ 'vesara-silks' ]; }
+    public function get_keywords(): array { return [ 'vesara', 'about', 'silk', 'brand', 'story' ]; }
+    public function get_style_depends(): array { return [ 'vesara-widgets-style' ]; }
 
     protected function register_controls(): void {
-
-        // ── CONTENT TAB ──────────────────────────────────────────────────────
 
         $this->start_controls_section( 'section_about_vesara_content', [
             'label' => esc_html__( 'Content', 'vesara-silks-widgets' ),
@@ -43,9 +25,11 @@ class About_Vesara_Widget extends Widget_Base {
         ] );
 
         $this->add_control( 'about_vesara_icon', [
-            'label'   => esc_html__( 'Icon Class', 'vesara-silks-widgets' ),
-            'type'    => Controls_Manager::TEXT,
-            'default' => 'eicon-person',
+            'label'       => esc_html__( 'Icon', 'vesara-silks-widgets' ),
+            'type'        => Controls_Manager::ICONS,
+            'default'     => [ 'value' => 'fas fa-user', 'library' => 'fa-solid' ],
+            'skin'        => 'inline',
+            'label_block' => false,
         ] );
 
         $this->add_control( 'about_vesara_title', [
@@ -78,8 +62,7 @@ class About_Vesara_Widget extends Widget_Base {
 
         $this->end_controls_section();
 
-        // ── STYLE TAB ─────────────────────────────────────────────────────────
-
+        // STYLE TAB
         $this->start_controls_section( 'about_vesara_style', [
             'label' => esc_html__( 'Style', 'vesara-silks-widgets' ),
             'tab'   => Controls_Manager::TAB_STYLE,
@@ -105,12 +88,26 @@ class About_Vesara_Widget extends Widget_Base {
             'separator' => 'before',
         ] );
 
+        $this->add_control( 'about_vesara_icon_color', [
+            'label'     => esc_html__( 'Icon Color', 'vesara-silks-widgets' ),
+            'type'      => Controls_Manager::COLOR,
+            'default'   => '#c9a96e',
+            'selectors' => [
+                '{{WRAPPER}} .vsw-icon-badge i'  => 'color: {{VALUE}};',
+                '{{WRAPPER}} .vsw-icon-badge svg' => 'fill: {{VALUE}};',
+            ],
+        ] );
+
         $this->add_responsive_control( 'about_vesara_icon_size', [
             'label'      => esc_html__( 'Icon Size', 'vesara-silks-widgets' ),
             'type'       => Controls_Manager::SLIDER,
             'size_units' => [ 'px' ],
             'range'      => [ 'px' => [ 'min' => 10, 'max' => 80 ] ],
-            'selectors'  => [ '{{WRAPPER}} .vsw-icon-badge i' => 'font-size: {{SIZE}}{{UNIT}};' ],
+            'default'    => [ 'size' => 22, 'unit' => 'px' ],
+            'selectors'  => [
+                '{{WRAPPER}} .vsw-icon-badge i'  => 'font-size: {{SIZE}}{{UNIT}};',
+                '{{WRAPPER}} .vsw-icon-badge svg' => 'width: {{SIZE}}{{UNIT}}; height: {{SIZE}}{{UNIT}};',
+            ],
         ] );
 
         $this->add_responsive_control( 'about_vesara_badge_size', [
@@ -118,15 +115,16 @@ class About_Vesara_Widget extends Widget_Base {
             'type'       => Controls_Manager::SLIDER,
             'size_units' => [ 'px' ],
             'range'      => [ 'px' => [ 'min' => 20, 'max' => 120 ] ],
+            'default'    => [ 'size' => 56, 'unit' => 'px' ],
             'selectors'  => [ '{{WRAPPER}} .vsw-icon-badge' => 'width: {{SIZE}}{{UNIT}}; height: {{SIZE}}{{UNIT}};' ],
         ] );
 
         $this->add_responsive_control( 'about_vesara_icon_margin', [
-            'label'      => esc_html__( 'Icon Position (Margin)', 'vesara-silks-widgets' ),
-            'type'       => Controls_Manager::DIMENSIONS,
-            'size_units' => [ 'px', '%', 'em' ],
-            'selectors'  => [ '{{WRAPPER}} .vsw-icon-badge' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};' ],
-            'description'=> esc_html__( 'Use margin to manually move the icon up, down, left, or right.', 'vesara-silks-widgets' ),
+            'label'       => esc_html__( 'Icon Position (Margin)', 'vesara-silks-widgets' ),
+            'type'        => Controls_Manager::DIMENSIONS,
+            'size_units'  => [ 'px', '%', 'em' ],
+            'selectors'   => [ '{{WRAPPER}} .vsw-icon-badge' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};' ],
+            'description' => esc_html__( 'Use margin to manually move the icon up, down, left, or right.', 'vesara-silks-widgets' ),
         ] );
 
         $this->add_control( 'about_vesara_gold', [
@@ -136,7 +134,6 @@ class About_Vesara_Widget extends Widget_Base {
             'selectors' => [
                 '{{WRAPPER}} .vsw-section-title' => 'color: {{VALUE}};',
                 '{{WRAPPER}} .vsw-title-rule'    => 'background: {{VALUE}};',
-                '{{WRAPPER}} .vsw-icon-badge i'  => 'color: {{VALUE}};',
             ],
         ] );
 
@@ -153,9 +150,7 @@ class About_Vesara_Widget extends Widget_Base {
             'size_units' => [ 'px' ],
             'range'      => [ 'px' => [ 'min' => 20, 'max' => 160 ] ],
             'default'    => [ 'size' => 80, 'unit' => 'px' ],
-            'selectors'  => [
-                '{{WRAPPER}} .vsw-section-wrap' => 'padding-top: {{SIZE}}{{UNIT}}; padding-bottom: {{SIZE}}{{UNIT}};',
-            ],
+            'selectors'  => [ '{{WRAPPER}} .vsw-section-wrap' => 'padding-top: {{SIZE}}{{UNIT}}; padding-bottom: {{SIZE}}{{UNIT}};' ],
         ] );
 
         $this->add_control( 'about_vesara_img_radius', [
@@ -181,18 +176,16 @@ class About_Vesara_Widget extends Widget_Base {
     }
 
     protected function render(): void {
-        $settings   = $this->get_settings_for_display();
-        $img_pos    = $settings['about_vesara_image_position'] === 'left' ? 'vsw-layout--img-left' : 'vsw-layout--img-right';
-        $icon_class = esc_attr( $settings['about_vesara_icon'] );
-        $has_image  = ! empty( $settings['about_vesara_image']['url'] );
+        $settings  = $this->get_settings_for_display();
+        $img_pos   = $settings['about_vesara_image_position'] === 'left' ? 'vsw-layout--img-left' : 'vsw-layout--img-right';
+        $has_image = ! empty( $settings['about_vesara_image']['url'] );
         ?>
         <div class="vsw-section-outer">
             <div class="vsw-section-wrap <?php echo esc_attr( $img_pos ); ?>">
-
                 <div class="vsw-section-text">
                     <div class="vsw-section-header">
                         <span class="vsw-icon-badge" aria-hidden="true">
-                            <i class="<?php echo $icon_class; ?>"></i>
+                            <?php Icons_Manager::render_icon( $settings['about_vesara_icon'], [ 'aria-hidden' => 'true' ] ); ?>
                         </span>
                         <h2 class="vsw-section-title"><?php echo esc_html( $settings['about_vesara_title'] ); ?></h2>
                     </div>
@@ -201,16 +194,11 @@ class About_Vesara_Widget extends Widget_Base {
                         <?php echo wp_kses_post( $settings['about_vesara_content'] ); ?>
                     </div>
                 </div>
-
                 <div class="vsw-section-media">
                     <?php if ( $has_image ) : ?>
-                    <img class="vsw-section-img"
-                         src="<?php echo esc_url( $settings['about_vesara_image']['url'] ); ?>"
-                         alt="<?php echo esc_attr( $settings['about_vesara_title'] ); ?>"
-                         loading="lazy">
+                    <img class="vsw-section-img" src="<?php echo esc_url( $settings['about_vesara_image']['url'] ); ?>" alt="<?php echo esc_attr( $settings['about_vesara_title'] ); ?>" loading="lazy">
                     <?php endif; ?>
                 </div>
-
             </div>
         </div>
         <?php
@@ -219,16 +207,15 @@ class About_Vesara_Widget extends Widget_Base {
     protected function content_template(): void {
         ?>
         <#
-        var imgPos    = settings.about_vesara_image_position === 'left' ? 'vsw-layout--img-left' : 'vsw-layout--img-right';
-        var iconClass = settings.about_vesara_icon;
+        var imgPos   = settings.about_vesara_image_position === 'left' ? 'vsw-layout--img-left' : 'vsw-layout--img-right';
+        var iconHTML = elementor.helpers.renderIcon( view, settings.about_vesara_icon, { 'aria-hidden': 'true' }, 'i', 'object' );
         #>
         <div class="vsw-section-outer">
             <div class="vsw-section-wrap {{ imgPos }}">
-
                 <div class="vsw-section-text">
                     <div class="vsw-section-header">
                         <span class="vsw-icon-badge" aria-hidden="true">
-                            <i class="{{ iconClass }}"></i>
+                            <# if ( iconHTML && iconHTML.value ) { #>{{{ iconHTML.value }}}<# } #>
                         </span>
                         <h2 class="vsw-section-title">{{ settings.about_vesara_title }}</h2>
                     </div>
@@ -237,15 +224,11 @@ class About_Vesara_Widget extends Widget_Base {
                         {{{ settings.about_vesara_content }}}
                     </div>
                 </div>
-
                 <div class="vsw-section-media">
                     <# if ( settings.about_vesara_image && settings.about_vesara_image.url ) { #>
-                    <img class="vsw-section-img"
-                         src="{{ settings.about_vesara_image.url }}"
-                         alt="{{ settings.about_vesara_title }}">
+                    <img class="vsw-section-img" src="{{ settings.about_vesara_image.url }}" alt="{{ settings.about_vesara_title }}">
                     <# } #>
                 </div>
-
             </div>
         </div>
         <?php
