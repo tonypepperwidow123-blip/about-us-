@@ -175,6 +175,62 @@ class Thought_Behind_Widget extends Widget_Base {
             'selectors'  => [ '{{WRAPPER}} .vsw-section-img' => 'border-radius: {{SIZE}}{{UNIT}};' ],
         ] );
 
+        $this->add_control( 'thought_img_size_heading', [
+            'label'     => esc_html__( 'Image Size', 'vesara-silks-widgets' ),
+            'type'      => Controls_Manager::HEADING,
+            'separator' => 'before',
+        ] );
+
+        $this->add_responsive_control( 'thought_img_max_width', [
+            'label'      => esc_html__( 'Image Max Width', 'vesara-silks-widgets' ),
+            'type'       => Controls_Manager::SLIDER,
+            'size_units' => [ 'px', '%' ],
+            'range'      => [
+                'px' => [ 'min' => 100, 'max' => 1200 ],
+                '%'  => [ 'min' => 10,  'max' => 100  ],
+            ],
+            'default'    => [ 'size' => 540, 'unit' => 'px' ],
+            'selectors'  => [ '{{WRAPPER}} .vsw-section-img' => 'max-width: {{SIZE}}{{UNIT}};' ],
+        ] );
+
+        $this->add_responsive_control( 'thought_img_width', [
+            'label'      => esc_html__( 'Image Width', 'vesara-silks-widgets' ),
+            'type'       => Controls_Manager::SLIDER,
+            'size_units' => [ 'px', '%' ],
+            'range'      => [
+                'px' => [ 'min' => 100, 'max' => 1200 ],
+                '%'  => [ 'min' => 10,  'max' => 100  ],
+            ],
+            'default'    => [ 'size' => 100, 'unit' => '%' ],
+            'selectors'  => [ '{{WRAPPER}} .vsw-section-img' => 'width: {{SIZE}}{{UNIT}};' ],
+        ] );
+
+        $this->add_responsive_control( 'thought_img_height', [
+            'label'      => esc_html__( 'Image Height', 'vesara-silks-widgets' ),
+            'type'       => Controls_Manager::SLIDER,
+            'size_units' => [ 'px', 'vh' ],
+            'range'      => [
+                'px' => [ 'min' => 100, 'max' => 900 ],
+                'vh' => [ 'min' => 10,  'max' => 100 ],
+            ],
+            'default'    => [ 'size' => 0, 'unit' => 'px' ],
+            'selectors'  => [ '{{WRAPPER}} .vsw-section-img' => 'height: {{SIZE}}{{UNIT}};' ],
+            'description' => esc_html__( 'Set to 0 for auto height.', 'vesara-silks-widgets' ),
+        ] );
+
+        $this->add_control( 'thought_img_object_fit', [
+            'label'     => esc_html__( 'Image Fit', 'vesara-silks-widgets' ),
+            'type'      => Controls_Manager::SELECT,
+            'default'   => 'cover',
+            'options'   => [
+                'cover'   => esc_html__( 'Cover (crop to fill)', 'vesara-silks-widgets' ),
+                'contain' => esc_html__( 'Contain (show full image)', 'vesara-silks-widgets' ),
+                'fill'    => esc_html__( 'Fill (stretch)', 'vesara-silks-widgets' ),
+                'none'    => esc_html__( 'None', 'vesara-silks-widgets' ),
+            ],
+            'selectors' => [ '{{WRAPPER}} .vsw-section-img' => 'object-fit: {{VALUE}};' ],
+        ] );
+
         $this->add_group_control( Group_Control_Typography::get_type(), [
             'name'     => 'thought_title_typo',
             'selector' => '{{WRAPPER}} .vsw-section-title',
