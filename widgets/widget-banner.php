@@ -29,9 +29,16 @@ class Banner_Widget extends Widget_Base {
         $repeater = new Repeater();
 
         $repeater->add_control( 'slide_image', [
-            'label'   => esc_html__( 'Background Image', 'vesara-silks-widgets' ),
+            'label'   => esc_html__( 'Background Image (Desktop)', 'vesara-silks-widgets' ),
             'type'    => Controls_Manager::MEDIA,
             'default' => [ 'url' => '' ],
+        ] );
+
+        $repeater->add_control( 'slide_image_mobile', [
+            'label'   => esc_html__( 'Background Image (Mobile/Portrait)', 'vesara-silks-widgets' ),
+            'type'    => Controls_Manager::MEDIA,
+            'default' => [ 'url' => '' ],
+            'description' => esc_html__( 'Optional. Upload a portrait-oriented image for mobile devices. If empty, the desktop image will be used.', 'vesara-silks-widgets' ),
         ] );
 
         $repeater->add_control( 'slide_bg_color', [
@@ -528,10 +535,18 @@ class Banner_Widget extends Widget_Base {
                 if ( ! empty( $slide['slide_image'] ) && is_array( $slide['slide_image'] ) ) {
                     $img_url = $slide['slide_image']['url'] ?? '';
                 }
+                $mobile_img_url = '';
+                if ( ! empty( $slide['slide_image_mobile'] ) && is_array( $slide['slide_image_mobile'] ) ) {
+                    $mobile_img_url = $slide['slide_image_mobile']['url'] ?? '';
+                }
                 $bg_style = 'background-color:' . esc_attr( $bg_color ) . ';';
                 if ( $img_url ) {
-                    $bg_style .= 'background-image:url(' . esc_url( $img_url ) . ');';
+                    $bg_style .= '--vsw-bg-desktop:url(' . esc_url( $img_url ) . ');';
                 }
+                if ( $mobile_img_url ) {
+                    $bg_style .= '--vsw-bg-mobile:url(' . esc_url( $mobile_img_url ) . ');';
+                }
+
                 $btn_obj     = isset( $slide['slide_button_url'] ) ? $slide['slide_button_url'] : [];
                 $btn_url     = ! empty( $btn_obj['url'] ) ? $btn_obj['url'] : '#';
                 $is_ext      = ! empty( $btn_obj['is_external'] );
@@ -621,7 +636,11 @@ class Banner_Widget extends Widget_Base {
                 var overlay  = slide.slide_overlay_color || 'transparent';
                 var align    = slide.slide_content_align || 'center';
                 var imgUrl   = slide.slide_image && slide.slide_image.url ? slide.slide_image.url : '';
-                var bgStyle  = 'background-color:' + bgColor + ';' + ( imgUrl ? 'background-image:url(' + imgUrl + ');' : '' );
+                var mImgUrl  = slide.slide_image_mobile && slide.slide_image_mobile.url ? slide.slide_image_mobile.url : '';
+                var bgStyle  = 'background-color:' + bgColor + ';';
+                if ( imgUrl ) bgStyle += '--vsw-bg-desktop:url(' + imgUrl + ');';
+                if ( mImgUrl ) bgStyle += '--vsw-bg-mobile:url(' + mImgUrl + ');';
+
                 var bLink    = slide.slide_banner_link && slide.slide_banner_link.url ? slide.slide_banner_link.url : '';
             #>
             <div class="vsw-banner-slide vsw-align-{{ align }}{{ active }}" style="{{ bgStyle }}">

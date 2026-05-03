@@ -36,10 +36,17 @@
     background-size: cover;
     background-position: center center;
     background-repeat: no-repeat;
+    background-image: var(--vsw-bg-desktop, none);
     opacity: 0;
     pointer-events: none;
     transition: opacity 0.9s ease, transform 0.9s cubic-bezier(0.25, 0.8, 0.25, 1);
     z-index: 1;
+}
+
+@media (max-width: 767px) {
+    .vsw-banner-slide {
+        background-image: var(--vsw-bg-mobile, var(--vsw-bg-desktop, none));
+    }
 }
 
 .vsw-banner-slide.vsw-slide-active {
