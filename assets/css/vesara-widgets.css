@@ -33,8 +33,8 @@
     left: 0;
     display: flex;
     align-items: center;
-    background-size: cover;
-    background-position: center center;
+    background-size: var(--vsw-slide-bg-size, cover);
+    background-position: var(--vsw-slide-bg-position, center center);
     background-repeat: no-repeat;
     background-image: var(--vsw-bg-desktop, none);
     opacity: 0;

@@ -41,6 +41,38 @@ class Banner_Widget extends Widget_Base {
             'description' => esc_html__( 'Optional. Upload a portrait-oriented image for mobile devices. If empty, the desktop image will be used.', 'vesara-silks-widgets' ),
         ] );
 
+        $repeater->add_control( 'slide_bg_size', [
+            'label'   => esc_html__( 'Image Fit (Desktop)', 'vesara-silks-widgets' ),
+            'type'    => Controls_Manager::SELECT,
+            'options' => [
+                'cover'   => esc_html__( 'Cover — fill banner, may crop top/bottom', 'vesara-silks-widgets' ),
+                'contain' => esc_html__( 'Contain — show full image, no cropping', 'vesara-silks-widgets' ),
+                'auto'    => esc_html__( 'Auto — original image size', 'vesara-silks-widgets' ),
+                '100% 100%' => esc_html__( 'Stretch — stretch to fill exactly', 'vesara-silks-widgets' ),
+            ],
+            'default'     => 'cover',
+            'description' => esc_html__( 'If top/bottom of image is cut off, switch to "Contain".', 'vesara-silks-widgets' ),
+        ] );
+
+        $repeater->add_control( 'slide_bg_position', [
+            'label'   => esc_html__( 'Image Focus Point', 'vesara-silks-widgets' ),
+            'type'    => Controls_Manager::SELECT,
+            'options' => [
+                'center center' => esc_html__( 'Center Center (default)', 'vesara-silks-widgets' ),
+                'center top'    => esc_html__( 'Center Top — show top of image', 'vesara-silks-widgets' ),
+                'center bottom' => esc_html__( 'Center Bottom — show bottom of image', 'vesara-silks-widgets' ),
+                'left center'   => esc_html__( 'Left Center', 'vesara-silks-widgets' ),
+                'right center'  => esc_html__( 'Right Center', 'vesara-silks-widgets' ),
+                'left top'      => esc_html__( 'Left Top', 'vesara-silks-widgets' ),
+                'right top'     => esc_html__( 'Right Top', 'vesara-silks-widgets' ),
+                'left bottom'   => esc_html__( 'Left Bottom', 'vesara-silks-widgets' ),
+                'right bottom'  => esc_html__( 'Right Bottom', 'vesara-silks-widgets' ),
+            ],
+            'default'     => 'center center',
+            'condition'   => [ 'slide_bg_size' => 'cover' ],
+            'description' => esc_html__( 'When Image Fit is "Cover", choose which part of the image to keep visible.', 'vesara-silks-widgets' ),
+        ] );
+
         $repeater->add_control( 'slide_bg_color', [
             'label'   => esc_html__( 'Fallback Background Color', 'vesara-silks-widgets' ),
             'type'    => Controls_Manager::COLOR,
@@ -539,7 +571,11 @@ class Banner_Widget extends Widget_Base {
                 if ( ! empty( $slide['slide_image_mobile'] ) && is_array( $slide['slide_image_mobile'] ) ) {
                     $mobile_img_url = $slide['slide_image_mobile']['url'] ?? '';
                 }
+                $bg_size     = ! empty( $slide['slide_bg_size'] )     ? $slide['slide_bg_size']     : 'cover';
+                $bg_position = ! empty( $slide['slide_bg_position'] ) ? $slide['slide_bg_position'] : 'center center';
                 $bg_style = 'background-color:' . esc_attr( $bg_color ) . ';';
+                $bg_style .= '--vsw-slide-bg-size:' . esc_attr( $bg_size ) . ';';
+                $bg_style .= '--vsw-slide-bg-position:' . esc_attr( $bg_position ) . ';';
                 if ( $img_url ) {
                     $bg_style .= '--vsw-bg-desktop:url(' . esc_url( $img_url ) . ');';
                 }
@@ -637,7 +673,11 @@ class Banner_Widget extends Widget_Base {
                 var align    = slide.slide_content_align || 'center';
                 var imgUrl   = slide.slide_image && slide.slide_image.url ? slide.slide_image.url : '';
                 var mImgUrl  = slide.slide_image_mobile && slide.slide_image_mobile.url ? slide.slide_image_mobile.url : '';
+                var bgSize     = slide.slide_bg_size     || 'cover';
+                var bgPosition = slide.slide_bg_position || 'center center';
                 var bgStyle  = 'background-color:' + bgColor + ';';
+                bgStyle += '--vsw-slide-bg-size:' + bgSize + ';';
+                bgStyle += '--vsw-slide-bg-position:' + bgPosition + ';';
                 if ( imgUrl ) bgStyle += '--vsw-bg-desktop:url(' + imgUrl + ');';
                 if ( mImgUrl ) bgStyle += '--vsw-bg-mobile:url(' + mImgUrl + ');';
 
