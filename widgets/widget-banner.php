@@ -563,14 +563,30 @@ class Banner_Widget extends Widget_Base {
                 $bg_color    = ! empty( $slide['slide_bg_color'] ) ? $slide['slide_bg_color'] : '#1a1210';
                 $overlay     = ! empty( $slide['slide_overlay_color'] ) ? $slide['slide_overlay_color'] : 'transparent';
                 $align       = ! empty( $slide['slide_content_align'] ) ? $slide['slide_content_align'] : 'center';
-                $img_url     = '';
-                if ( ! empty( $slide['slide_image'] ) && is_array( $slide['slide_image'] ) ) {
-                    $img_url = $slide['slide_image']['url'] ?? '';
+                // ── Resolve image URLs via attachment ID for public/anonymous access ──
+                // Using wp_get_attachment_image_src() ensures we always get the
+                // clean, publicly-accessible URL — not the editor/preview URL
+                // that Elementor stores in the 'url' key (which may require auth).
+                $img_url = '';
+                if ( ! empty( $slide['slide_image']['id'] ) ) {
+                    $src = wp_get_attachment_image_src( (int) $slide['slide_image']['id'], 'full' );
+                    if ( $src ) $img_url = $src[0];
                 }
+                // Fallback to stored URL if no ID (e.g. external image)
+                if ( ! $img_url && ! empty( $slide['slide_image']['url'] ) ) {
+                    $img_url = $slide['slide_image']['url'];
+                }
+
                 $mobile_img_url = '';
-                if ( ! empty( $slide['slide_image_mobile'] ) && is_array( $slide['slide_image_mobile'] ) ) {
-                    $mobile_img_url = $slide['slide_image_mobile']['url'] ?? '';
+                if ( ! empty( $slide['slide_image_mobile']['id'] ) ) {
+                    $src_m = wp_get_attachment_image_src( (int) $slide['slide_image_mobile']['id'], 'full' );
+                    if ( $src_m ) $mobile_img_url = $src_m[0];
                 }
+                // Fallback to stored URL if no ID
+                if ( ! $mobile_img_url && ! empty( $slide['slide_image_mobile']['url'] ) ) {
+                    $mobile_img_url = $slide['slide_image_mobile']['url'];
+                }
+
                 $bg_size     = ! empty( $slide['slide_bg_size'] )     ? $slide['slide_bg_size']     : 'cover';
                 $bg_position = ! empty( $slide['slide_bg_position'] ) ? $slide['slide_bg_position'] : 'center center';
                 $bg_style = 'background-color:' . esc_attr( $bg_color ) . ';';
@@ -604,6 +620,23 @@ class Banner_Widget extends Widget_Base {
 
                 <?php if ( $b_link_url ) : ?>
                 <a href="<?php echo esc_url( $b_link_url ); ?>" class="vsw-banner-overall-link"<?php echo $b_target . $b_rel; ?>></a>
+                <?php endif; ?>
+
+                <?php
+                // Hidden preload <img> — forces the browser (and any CDN/proxy cache)
+                // to fetch the image as a proper public resource, not just a CSS bg.
+                // This fixes the blank banner issue for incognito/anonymous visitors.
+                if ( $img_url ) :
+                    $preload_mobile = $mobile_img_url ?: $img_url;
+                ?>
+                <img src="<?php echo esc_url( $img_url ); ?>"
+                     class="vsw-banner-preload-img"
+                     alt=""
+                     aria-hidden="true"
+                     loading="eager"
+                     fetchpriority="<?php echo $index === 0 ? 'high' : 'low'; ?>"
+                     srcset="<?php echo esc_url( $preload_mobile ); ?> 767w, <?php echo esc_url( $img_url ); ?> 768w"
+                     sizes="(max-width: 767px) 100vw, 100vw" />
                 <?php endif; ?>
 
                 <div class="vsw-banner-overlay" style="background:<?php echo esc_attr( $overlay ); ?>;"></div>

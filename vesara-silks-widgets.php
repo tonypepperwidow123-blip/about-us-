@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Vesara Silks Widgets
  * Description: Seven reusable Elementor widgets for the Vesara Silks website.
- * Version: 1.1.0
+ * Version: 1.1.1
  * Requires Plugins: elementor
  * Author: Dharani
  * Text Domain: vesara-silks-widgets
@@ -10,7 +10,7 @@
 
 if ( ! defined( 'ABSPATH' ) ) exit;
 
-define( 'VSW_VERSION', '1.1.0' );
+define( 'VSW_VERSION', '1.1.1' );
 define( 'VSW_PATH', plugin_dir_path( __FILE__ ) );
 define( 'VSW_URL',  plugin_dir_url( __FILE__ )  );
 

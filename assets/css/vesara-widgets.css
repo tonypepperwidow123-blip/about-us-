@@ -24,6 +24,19 @@
     display: block;
 }
 
+/* Hidden preload img — ensures image is fetched as a public resource
+   for all visitors (incognito, anonymous, CDN-cached) not just logged-in editors */
+.vsw-banner-preload-img {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+    pointer-events: none;
+    top: 0;
+    left: 0;
+    z-index: 0;
+}
+
 /* All slides stacked — pure opacity crossfade */
 .vsw-banner-slide {
     position: absolute;
